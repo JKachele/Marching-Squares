@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'com.jkachele'
+version '1.0-SNAPSHOT'
+
+project.ext.lwjglVersion = "3.3.1"
+project.ext.jomlVersion = "1.10.5"
+project.ext.lwjglNatives = "natives-windows"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // LWJGL
+    implementation platform("org.lwjgl:lwjgl-bom:3.3.1")
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-assimp"
+    implementation "org.lwjgl:lwjgl-cuda"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-libdivide"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opencl"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-libdivide::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    // Joml
+    implementation "org.joml:joml:1.10.4"
+
+    //JUnit
+    testImplementation('junit:junit:4.13.2')
+}
