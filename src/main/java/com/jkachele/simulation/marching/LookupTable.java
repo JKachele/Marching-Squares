@@ -5,10 +5,10 @@
  *Date----------10/26/2022
  *License-------MIT License
  ******************************************/
-package com.jkachele.simulation.util;
+package com.jkachele.simulation.marching;
 
 public enum LookupTable {;
-    final int[][] TABLE = {
+    static final int[][] TABLE = {
             {},             // 0  (0000)
             {1, 4},         // 1  (0001)
             {1, 2},         // 2  (0010)

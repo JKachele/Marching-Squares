@@ -44,6 +44,13 @@ public class Color {
         this.alpha = 1.0f;
     }
 
+    public Color(float alpha) {
+        this.red = alpha;
+        this.green = alpha;
+        this.blue = alpha;
+        this.alpha = 1.0f;
+    }
+
     public Color darker() {
         return new Color(Math.max(red - 0.01f, 0.0f), Math.max(green - 0.01f, 0.0f),
                 Math.max(blue - 0.01f, 0.0f), alpha);

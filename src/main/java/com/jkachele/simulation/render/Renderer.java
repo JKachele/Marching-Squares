@@ -8,8 +8,8 @@
 package com.jkachele.simulation.render;
 
 import com.jkachele.simulation.display.Scene;
-import com.jkachele.simulation.primitives.Line2D;
-import com.jkachele.simulation.primitives.Point2D;
+import com.jkachele.simulation.render.primitives.Line2D;
+import com.jkachele.simulation.render.primitives.Point2D;
 import com.jkachele.simulation.util.Color;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -31,7 +31,7 @@ public class Renderer {
     private static int vaoID;
     private static int vboID;
 
-    private static final int MAX_POINTS = 100000;
+    private static final int MAX_POINTS = 1000000;
 
     // 7 floats per point (x, y, z, r, g, b, a)
     private static float[] vertices = new float[MAX_POINTS * 7];
