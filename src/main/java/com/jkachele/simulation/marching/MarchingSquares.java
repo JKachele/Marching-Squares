@@ -45,11 +45,11 @@ public class MarchingSquares {
                 positions[i][j] = new Vector2f(x, y);
                 float value = function.call(x, y);
                 values[i][j] = value;
-//                if (value < 0) {
-//                    Renderer.addPoint2D(new Vector2f(x, y), Color.WHITE.toVector(), 1);
-//                } else {
-//                    Renderer.addPoint2D(new Vector2f(x, y), Color.BLACK.toVector(), 1);
-//                }
+                if (value < 0) {
+                    Renderer.addPoint2D(new Vector2f(x, y), Color.RED.toVector(), 1);
+                } else {
+                    Renderer.addPoint2D(new Vector2f(x, y), Color.BLUE.toVector(), 1);
+                }
             }
         }
         march();
