@@ -7,11 +7,11 @@
  ******************************************/
 package com.jkachele.simulation.display;
 
+import com.jkachele.simulation.render.Renderer;
 import com.jkachele.simulation.util.Color;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public class Engine implements Runnable{
     private Color backgroundColor;
@@ -59,15 +59,24 @@ public class Engine implements Runnable{
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
+            Renderer.beginFrame();
+
             if (dt >= 0) {
+                Renderer.draw();
                 Scene.update(dt);
             }
 
             glfwSwapBuffers(Window.glfwWindow); // swap the color buffers
 
+            System.out.print("\r" + fps(dt));
+
             endTime = (float)glfwGetTime();
             dt = endTime - beginTime;
             beginTime = endTime;
         }
+    }
+
+    private String fps(float dt) {
+        return String.format("FPS: %.2f", 1.0f / dt);
     }
 }

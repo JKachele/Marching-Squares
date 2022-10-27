@@ -15,7 +15,7 @@ public class Main {
         final int DEFAULT_WIDTH = 1920;
         final int DEFAULT_HEIGHT = (DEFAULT_WIDTH / 16) * 9;    // 16 x 9 aspect ratio
         final String DEFAULT_TITLE = "Java Game";
-        final Color backgroundColor = Color.WHITE;
+        final Color backgroundColor = Color.BLACK;
 
         Engine engine = new Engine(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TITLE, backgroundColor);
         engine.start();
