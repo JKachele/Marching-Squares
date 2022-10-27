@@ -45,7 +45,7 @@ public class Renderer {
     private static boolean started = false;
 
     public static void init() {
-        shader = new ShaderParser("assets/shaders/lineShader.glsl");
+        shader = new ShaderParser("assets/shaders/shader.glsl");
         shader.compile();
 
         // ============================================================
