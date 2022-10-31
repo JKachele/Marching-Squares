@@ -68,7 +68,7 @@ public class Engine implements Runnable{
 
             glfwSwapBuffers(Window.glfwWindow); // swap the color buffers
 
-            System.out.print("\r" + fps(dt));
+//            System.out.print("\r" + fps(dt));
 
             endTime = (float)glfwGetTime();
             dt = endTime - beginTime;
@@ -76,7 +76,7 @@ public class Engine implements Runnable{
         }
     }
 
-    private String fps(float dt) {
+    public static String fps(float dt) {
         return String.format("FPS: %.2f", 1.0f / dt);
     }
 }

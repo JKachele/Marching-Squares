@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/../Engine2D-LWJGL" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../OpenGL-Compute-Shaders" vcs="Git" />
   </component>
 </project>

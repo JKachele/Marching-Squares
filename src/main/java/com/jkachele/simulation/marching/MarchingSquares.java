@@ -7,52 +7,77 @@
  ******************************************/
 package com.jkachele.simulation.marching;
 
+import com.jkachele.simulation.computeShader.Compute;
 import com.jkachele.simulation.display.Scene;
 import com.jkachele.simulation.render.Renderer;
 import com.jkachele.simulation.util.Color;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+
 public class MarchingSquares {
     private static Vector2i gridResolution;
     private static ImplicitFunction2D function;
 
-    private static Vector2f[][] positions;
-    private static float[][] values;
+    private static Vector2f[] positions;
+    private static float[] values;
+    private static FloatBuffer vb;
 
-    private static boolean interpolate = false;
+    private static boolean interpolate = true;
 
     public static void init(Vector2i gridResolution, ImplicitFunction2D function) {
         MarchingSquares.gridResolution = gridResolution;
         MarchingSquares.function = function;
-        start();
+        positions = new Vector2f[gridResolution.x * gridResolution.y];
+        values = new float[gridResolution.x * gridResolution.y];
+        ByteBuffer vbb = ByteBuffer.allocateDirect(values.length * Float.BYTES);
+        vbb.order(ByteOrder.nativeOrder());
+        vb = vbb.asFloatBuffer();vb.put(values);
+        vb.position(0);
     }
 
     public static void init(Vector2i gridResolution) {
-        MarchingSquares.gridResolution = gridResolution;
-        MarchingSquares.function = (x, y) -> (x * x) + (y * y);     // Default function is a unit circle
-        start();
+        MarchingSquares.init(gridResolution, (x, y) -> (x * x) + (y * y));     // Default function is a unit circle
     }
 
-    private static void start() {
-        positions = new Vector2f[gridResolution.x][gridResolution.y];
-        values = new float[gridResolution.x][gridResolution.y];
-        Vector2f cameraSize = Scene.getCamera().getProjectionSize();
-        for (int i = 0; i < gridResolution.x; i++) {
-            for (int j = 0; j < gridResolution.y; j++) {
-                float x = (cameraSize.x / gridResolution.x) * i;
-                float y = (cameraSize.y / gridResolution.y) * j;
-                positions[i][j] = new Vector2f(x, y);
-                float value = function.call(x, y);
-                values[i][j] = value;
-                if (value < 0) {
-                    Renderer.addPoint2D(new Vector2f(x, y), Color.RED.toVector(), 1);
-                } else {
-                    Renderer.addPoint2D(new Vector2f(x, y), Color.BLUE.toVector(), 1);
-                }
-            }
-        }
+    public static void start() {
+        float startTime = System.nanoTime();
+        Compute valueCompute = new Compute("assets/shaders/computeValues.glsl", gridResolution);
+        valueCompute.setValues(vb);
+        valueCompute.use();
+        valueCompute.dispatch();
+        valueCompute.waitForCompute();
+        vb = valueCompute.getValues();
+        values = arrayTo2D(values1D);
+
+//        Vector2f cameraSize = Scene.getCamera().getProjectionSize();
+//        for (int i = 0; i < gridResolution.x; i++) {
+//            for (int j = 0; j < gridResolution.y; j++) {
+//                float x = (cameraSize.x / gridResolution.x) * i;
+//                float y = (cameraSize.y / gridResolution.y) * j;
+//                positions[i][j] = new Vector2f(x, y);
+//                float value = function.call(x, y);
+//                values[i][j] = value;
+//            }
+//        }
+        float endTime = System.nanoTime();
+        float time = (endTime - startTime) / 1000000000;
+        System.out.println("MarchingSquares init took " + time);
+
         march();
+    }
+
+    private static float[][] arrayTo2D(float[] values) {
+        float[][] result = new float[gridResolution.x][gridResolution.y];
+        for (int i = 0; i < gridResolution.x ; i++) {
+            if (gridResolution.y >= 0)
+                System.arraycopy(values, i * gridResolution.y, result[i], 0, gridResolution.y);
+        }
+
+        return result;
     }
 
     private static void march() {
@@ -130,9 +155,9 @@ public class MarchingSquares {
             float endVal = values[endIndex.x][endIndex.y];
 
             if (startIndex.x == endIndex.x) {
-                y = interpolate(startPos.y, endPos.y, startVal, endVal);
+                y = lerp(startPos.y, endPos.y, startVal, endVal);
             } else {
-                x = interpolate(startPos.x, endPos.x, startVal, endVal);
+                x = lerp(startPos.x, endPos.x, startVal, endVal);
             }
         } else {
             if (startIndex.x == endIndex.x) {
@@ -145,10 +170,12 @@ public class MarchingSquares {
         return new Vector2f(x, y);
     }
 
-    private static float interpolate(float startPos, float endPos, float startVal, float endVal) {
+    private static float lerp(float startPos, float endPos, float startVal, float endVal) {
+        float distance = endPos - startPos;
+        float valDistance = Math.abs(endVal - startVal);
+        float pointPercent = Math.abs(startVal) / valDistance;
 
-
-        return 0;
+        return startPos + (distance * pointPercent);
     }
 
     public static float[][] getValues() {

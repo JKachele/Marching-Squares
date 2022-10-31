@@ -182,7 +182,7 @@ public class Renderer {
     }
 
     public static void addLine2D(Vector2f start, Vector2f end, Vector4f color, int lifetime) {
-        if (lines.size() >= MAX_POINTS) {
+        if (((lines.size() * 2) + points.size()) >= MAX_POINTS) {
             return;
         }
         Renderer.lines.add(new Line2D(start, end, color, lifetime));
@@ -197,7 +197,7 @@ public class Renderer {
     }
 
     public static void addPoint2D(Vector2f position, Vector4f color, int lifetime) {
-        if (points.size() >= MAX_POINTS) {
+        if (((lines.size() * 2) + points.size()) >= MAX_POINTS) {
             return;
         }
         Renderer.points.add(new Point2D(position, color, lifetime));
@@ -209,5 +209,9 @@ public class Renderer {
 
     public static void addPoint2D(Vector2f position) {
         addPoint2D(position, Color.GREEN.toVector(), 1);
+    }
+
+    public static int numPoints() {
+        return points.size() + (lines.size() * 2);
     }
 }

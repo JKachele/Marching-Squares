@@ -9,6 +9,7 @@ package com.jkachele.simulation.display;
 
 import com.jkachele.simulation.marching.ImplicitFunction2D;
 import com.jkachele.simulation.marching.MarchingSquares;
+import com.jkachele.simulation.render.Renderer;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 
@@ -21,17 +22,6 @@ public class Scene {
 
     public static void init() {
         camera = new Camera(cameraSize);
-
-//        Renderer.addLine2D(new Vector2f(0, 0), new Vector2f(1920, 1080), Color.WHITE.toVector(), -1);
-//        Renderer.addLine2D(new Vector2f(0, 1080), new Vector2f(1920, 0), Color.WHITE.toVector(), -1);
-//
-//
-//        Vector2i gridSize = new Vector2i(50, 50);
-//        for (int i = 0; i < cameraSize.x; i += cameraSize.x / gridSize.x) {
-//            for (int j = 0; j < cameraSize.y; j += cameraSize.y / gridSize.y) {
-//                Renderer.addPoint2D(new Vector2f(i, j), Color.MAGENTA.toVector(), -1);
-//            }
-//        }
 
         circle = (x, y) -> square(x - (cameraSize.x / 2)) + square(y - (cameraSize.y / 2)) -
                 square((cameraSize.y / 4));
@@ -49,7 +39,9 @@ public class Scene {
     }
 
     public static void update(float dt) {
-        MarchingSquares.init(new Vector2i(100, 100), heart);
+        MarchingSquares.init(new Vector2i(10000, 10000), heart);
+
+//        System.out.print("\rFPS: " + Engine.fps(dt) + "\tPoints: " + Renderer.numPoints());
     }
 
     public static Camera getCamera() {
