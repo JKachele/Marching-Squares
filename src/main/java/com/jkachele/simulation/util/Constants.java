@@ -3,7 +3,7 @@
  *File----------Constants.java
  *Author--------Justin Kachele
  *Date----------10/26/2022
- *License-------MIT License
+ *License-------Mozilla Public License Version 2.0
  ******************************************/
 package com.jkachele.simulation.util;
 

@@ -3,12 +3,11 @@
  *File----------MarchingSquares.java
  *Author--------Justin Kachele
  *Date----------10/27/2022
- *License-------MIT License
+ *License-------Mozilla Public License Version 2.0
  ******************************************/
 package com.jkachele.simulation.marching;
 
 import com.jkachele.simulation.computeShader.Compute;
-import com.jkachele.simulation.display.Scene;
 import com.jkachele.simulation.render.Renderer;
 import com.jkachele.simulation.util.Color;
 import org.joml.Vector2f;
@@ -23,7 +22,8 @@ public class MarchingSquares {
     private static ImplicitFunction2D function;
 
     private static Vector2f[] positions;
-    private static float[] values;
+    private static float[] values1D;
+    private static float[][] values;
     private static FloatBuffer vb;
 
     private static boolean interpolate = true;
@@ -32,10 +32,10 @@ public class MarchingSquares {
         MarchingSquares.gridResolution = gridResolution;
         MarchingSquares.function = function;
         positions = new Vector2f[gridResolution.x * gridResolution.y];
-        values = new float[gridResolution.x * gridResolution.y];
-        ByteBuffer vbb = ByteBuffer.allocateDirect(values.length * Float.BYTES);
+        values1D = new float[gridResolution.x * gridResolution.y];
+        ByteBuffer vbb = ByteBuffer.allocateDirect(values1D.length * Float.BYTES);
         vbb.order(ByteOrder.nativeOrder());
-        vb = vbb.asFloatBuffer();vb.put(values);
+        vb = vbb.asFloatBuffer();vb.put(values1D);
         vb.position(0);
     }
 
@@ -51,8 +51,6 @@ public class MarchingSquares {
         valueCompute.dispatch();
         valueCompute.waitForCompute();
         vb = valueCompute.getValues();
-        values = arrayTo2D(values1D);
-
 //        Vector2f cameraSize = Scene.getCamera().getProjectionSize();
 //        for (int i = 0; i < gridResolution.x; i++) {
 //            for (int j = 0; j < gridResolution.y; j++) {
@@ -67,7 +65,7 @@ public class MarchingSquares {
         float time = (endTime - startTime) / 1000000000;
         System.out.println("MarchingSquares init took " + time);
 
-        march();
+//        march();
     }
 
     private static float[][] arrayTo2D(float[] values) {
@@ -144,8 +142,8 @@ public class MarchingSquares {
     }
 
     private static Vector2f getPoint(Vector2i startIndex, Vector2i endIndex) {
-        Vector2f startPos = positions[startIndex.x][startIndex.y];
-        Vector2f endPos = positions[endIndex.x][endIndex.y];
+        Vector2f startPos = positions[startIndex.x*startIndex.y];
+        Vector2f endPos = positions[endIndex.x*endIndex.y];
 
         float x = startPos.x;
         float y = startPos.y;

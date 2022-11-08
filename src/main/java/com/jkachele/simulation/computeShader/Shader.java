@@ -52,7 +52,7 @@ public class Shader {
         int success = glGetShaderi(shaderID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(shaderID, GL_INFO_LOG_LENGTH);
-            System.err.println("ERROR: '" + filePath + "'\n\tVertex shader compilation failed.");
+            System.err.println("ERROR: '" + filePath + "'\n\tCompute shader compilation failed.");
             System.err.println(glGetShaderInfoLog(shaderID, len));
             assert false : "";
         }

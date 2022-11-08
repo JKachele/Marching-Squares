@@ -3,7 +3,7 @@
  *File----------ImplicitFunction.java
  *Author--------Justin Kachele
  *Date----------10/27/2022
- *License-------MIT License
+ *License-------Mozilla Public License Version 2.0
  ******************************************/
 package com.jkachele.simulation.marching;
 

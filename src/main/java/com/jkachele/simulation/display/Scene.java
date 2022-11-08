@@ -3,13 +3,12 @@
  *File----------Scene.java
  *Author--------Justin Kachele
  *Date----------10/26/2022
- *License-------MIT License
+ *License-------Mozilla Public License Version 2.0
  ******************************************/
 package com.jkachele.simulation.display;
 
 import com.jkachele.simulation.marching.ImplicitFunction2D;
 import com.jkachele.simulation.marching.MarchingSquares;
-import com.jkachele.simulation.render.Renderer;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 
@@ -28,6 +27,8 @@ public class Scene {
         heart = (x, y) -> cube(square((x - 8)/3) + square((y - 4.5f)/3) - 1) -
                 (square((x - 8)/3) * cube((y - 4.5f)/3));
         cool = (x, y) -> (float)(Math.sin(square(x - 8) + square(y - 4.5f)) - Math.cos((x - 8) * (y - 4.5f)));
+
+        MarchingSquares.init(new Vector2i(10000, 10000), heart);
     }
 
     private static float square(float x) {
@@ -39,8 +40,7 @@ public class Scene {
     }
 
     public static void update(float dt) {
-        MarchingSquares.init(new Vector2i(10000, 10000), heart);
-
+        MarchingSquares.start();
 //        System.out.print("\rFPS: " + Engine.fps(dt) + "\tPoints: " + Renderer.numPoints());
     }
 

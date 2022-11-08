@@ -84,7 +84,7 @@ public class Compute {
 
     public void dispatch() {
         // just keep it simple, 2d work group
-        glDispatchCompute(workSize.x / 256, workSize.y / 256, 1);
+        glDispatchCompute(workSize.x / 32, workSize.y / 32, 1);
     }
 
     public void waitForCompute() {
